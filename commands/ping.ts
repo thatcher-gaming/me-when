@@ -8,4 +8,4 @@ const callback = async (interaction: CommandInteraction) => {
     interaction.reply("hello");
 }
 
-export { command, callback }
+export { callback, command };

@@ -1,6 +1,6 @@
+import { TOML } from "bun";
 import { promises as fs } from "fs";
 import { z } from "zod";
-import { TOML } from "bun";
 
 const config_file = "bot.toml"
 

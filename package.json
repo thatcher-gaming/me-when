@@ -7,5 +7,10 @@
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "discord.js": "^14.13.0",
+    "toml": "^3.0.0",
+    "zod": "^3.22.4"
   }
 }

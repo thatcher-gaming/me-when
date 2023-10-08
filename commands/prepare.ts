@@ -34,12 +34,6 @@ const callback = async (interaction: CommandInteraction) => {
     const round_count = Object.keys(scraped).length;
     const song_count = Object.values(scraped).flatMap(o => Object.values(o)).length;
 
-    (interaction.client as CoolClient).create_queue(
-        interaction.channel!.id,
-        thread.id,
-        stage.id,
-    );
-
     interaction.reply(outdent`
         # bot is now armed and dangerous
         downloading ${song_count} songs from ${

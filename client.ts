@@ -1,6 +1,17 @@
-import { Client, ClientOptions, Collection, CommandInteraction, Events, GatewayIntentBits, InteractionType, REST, Routes } from "discord.js";
+import {
+    Client,
+    ClientOptions,
+    Collection,
+    CommandInteraction,
+    Events,
+    InteractionType,
+    REST,
+    Routes,
+} from "discord.js";
 import { Command, commands } from "./commands";
 import { config } from "./config";
+import { QueueConfig, QueueRequest, QueueRequestCode, QueueResponse, QueueResponseCode } from "./playback/queue_support";
+import { scrape_the_thread } from "./stuff/threads";
 
 export class CoolClient extends Client {
     constructor(opt: ClientOptions) {
@@ -66,6 +77,37 @@ export class CoolClient extends Client {
             console.info(`great success!!`);
         } catch {
             console.error("oh well. was worth a go.");
+        }
+    }
+
+    current_queue: QueueConfig | undefined;
+    queue_worker: Worker | undefined;
+
+    async create_queue(sys_channel_id: string, thread_id: string, stage_id: string,) {
+        this.queue_worker = new Worker(
+            "./playback/queue_worker.ts",
+            { type: "module" }
+        );
+
+        this.queue_worker.addEventListener("message", this.handle_queue_msg);
+
+        const scraped = await scrape_the_thread(this, thread_id);
+        const qconfig = {
+            guild_id: config.guild_id,
+            sys_channel_id,
+            stage_id,
+            thread: scraped,
+        };
+        this.current_queue = qconfig;
+
+        this.queue_worker.postMessage([QueueRequestCode.Init, qconfig] as QueueRequest);
+    }
+
+    async handle_queue_msg(event: MessageEvent) {
+        const [op, data] = event.data as QueueResponse;
+
+        switch (op) {
+            case QueueResponseCode.BeginInit:
         }
     }
 }

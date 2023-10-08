@@ -22,8 +22,6 @@ const callback = async (interaction: CommandInteraction) => {
     const thread = interaction.options.get(chan_opt.name, true);
     const scraped = await scrape_the_thread(interaction.client as CoolClient, thread.channel!.id);
 
-    console.log(scraped);
-
     if (Object.values(scraped).length == 0) {
         interaction.reply("couldn't find anything");
     }

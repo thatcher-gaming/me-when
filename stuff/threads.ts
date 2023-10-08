@@ -7,6 +7,13 @@ export interface ParsedMessage {
     message: Message,
 }
 
+export type ParsedThread = {
+    id: string,
+    [round: number]: {
+        [id: string]: ParsedMessage,
+    }
+}
+
 export async function scrape_the_thread(client: CoolClient, chan_id: string) {
     const channel = await client.channels.fetch(chan_id);
 
@@ -60,8 +67,9 @@ export async function scrape_the_thread(client: CoolClient, chan_id: string) {
             return prev;
         }
 
-        // remove discord spoiler notation
-        const url = res.href.replaceAll("||", "");
+        // remove discord-specific markup
+        // i will never learn regex
+        const url = res.href.replaceAll("||", "").replaceAll(">", "").replaceAll("<", "");
 
         const parsed: ParsedMessage = {
             url,
@@ -72,7 +80,8 @@ export async function scrape_the_thread(client: CoolClient, chan_id: string) {
         prev[index] = round;
 
         return prev;
-    }, <{[round: number]: { [id: string]: ParsedMessage }}>{});
+    }, <ParsedThread>{});
 
+    parsed.id = chan_id;
     return parsed;
 }

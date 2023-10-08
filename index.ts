@@ -3,7 +3,7 @@ import { CoolClient } from "./client";
 import { config } from "./config";
 
 export const client = new CoolClient({
-    intents: [GatewayIntentBits.Guilds],
+    intents: [GatewayIntentBits.Guilds, GatewayIntentBits.MessageContent],
 });
 
 client.login(config.token);

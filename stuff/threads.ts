@@ -19,8 +19,15 @@ export async function scrape_the_thread(client: CoolClient, chan_id: string) {
     }
 
     const msgs = await channel.messages.fetch();
+    msgs.reverse()
 
+    let top_post = true;
     const parsed = msgs.reduce((prev, message) => {
+        if (top_post) {
+            top_post = false;
+            return prev;
+        }
+
         let round;
 
         // figure out which round we're inserting into

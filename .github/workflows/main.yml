@@ -8,6 +8,9 @@ jobs:
     steps:
       - name: Setup Bun
         uses: oven-sh/setup-bun@v1
+      - id: checkout
+        name: Checkout
+        uses: actions/checkout@v3
       - name: install deps
         run: bun install
       - name: do it

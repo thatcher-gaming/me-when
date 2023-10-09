@@ -2,7 +2,11 @@
   "name": "me-when",
   "module": "index.ts",
   "type": "module",
+  "scripts": {
+    "test": "bun run vitest"
+  },
   "devDependencies": {
+    "@types/fluent-ffmpeg": "^2.1.22",
     "bun-types": "latest",
     "vitest": "^0.34.6"
   },
@@ -11,9 +15,11 @@
   },
   "dependencies": {
     "discord.js": "^14.13.0",
+    "fluent-ffmpeg": "^2.1.2",
     "linkifyjs": "^4.1.1",
     "outdent": "^0.8.0",
     "toml": "^3.0.0",
+    "ytdl-core": "^4.11.5",
     "zod": "^3.22.4"
   }
 }

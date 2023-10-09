@@ -5,7 +5,7 @@ import ytdl from "ytdl-core";
 const yoink = (s: string, prefix: string, suffix: string) =>
   s.split(prefix)[1].split(suffix)[0];
 
-export const getReplayGain = async (
+export const get_replay_gain = async (
   fp: string
 ): Promise<{ gain: number; peak: number }> => {
   if (!fs.existsSync(fp)) {
@@ -37,11 +37,10 @@ export const getReplayGain = async (
   });
 };
 
-export const fetchAudioProxy = async (url: string, fname: string) => {
+export const fetch_audio_proxy = async (url: string, fname: string) => {
   const info = await ytdl.getInfo(url);
   const audioFormats = ytdl.filterFormats(info.formats, "audioonly");
   const format = ytdl.chooseFormat(audioFormats, { quality: "lowestaudio" });
-  console.log(format.container);
 
   const options: ytdl.downloadOptions = {
     format: format,
@@ -50,4 +49,4 @@ export const fetchAudioProxy = async (url: string, fname: string) => {
   return ytdl(url, options).pipe(fs.createWriteStream(fname));
 };
 
-export const dbToRatio = (dbVal: number) => Math.pow(10, dbVal / 20);
+export const db_to_ratio = (dbVal: number) => Math.pow(10, dbVal / 20);

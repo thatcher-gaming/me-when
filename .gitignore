@@ -182,3 +182,7 @@ testdata/*
 !testdata/test.wav
 
 yt-dlp
+
+# Added by cargo
+
+/target

@@ -26,9 +26,8 @@ describe("fetchAudioProxy", () => {
 
   it("can fetch a proxy", async () => {
     const proxy = await fetch_audio_proxy(testUrl, testUrlFile);
-    console.log(proxy);
     expect(proxy).not.toBeUndefined();
-  });
+  }, 8000);
 });
 
 describe("why not both", () => {
@@ -36,7 +35,7 @@ describe("why not both", () => {
     const proxy = await fetch_audio_proxy(testUrl, testUrlFile);
     const rg = await get_replay_gain(proxy);
     expect(rg).toEqual({ gain: -6.59, peak: 1.121168 });
-  });
+  }, 8000);
 });
 
 describe("dbToRatio", () => {

@@ -10,6 +10,8 @@ jobs:
         uses: oven-sh/setup-bun@v1
       - name: Setup yt-dlp
         uses: AnimMouse/setup-yt-dlp@v1
+        with:
+          with-ffmpeg: true
       - id: checkout
         name: Checkout
         uses: actions/checkout@v3

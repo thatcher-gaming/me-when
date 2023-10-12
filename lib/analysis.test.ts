@@ -4,7 +4,7 @@ import { db_to_ratio, fetch_audio_proxy, get_replay_gain } from "./analysis";
 const testFile = "./testdata/test.wav";
 
 const testUrl = "https://www.youtube.com/watch?v=QLlyd1syVkw";
-const testUrlFile = "cache/starlight.webm";
+const testUrlFile = "./testdata/starlight.webm";
 
 describe("getReplayGain", () => {
   it("throws an error on invalid filenames", async () => {
@@ -21,20 +21,21 @@ describe("getReplayGain", () => {
 describe("fetchAudioProxy", () => {
   it("throws an error on invalid URL", () => {
     const proxy = fetch_audio_proxy("http://BLARGH", "nope.webm");
-    expect(proxy).rejects.toThrowError("Not a YouTube domain");
+    expect(proxy).rejects.toThrowError("Unable to download webpage:");
   });
 
-  it("can fetch a proxy", () => {
-    const proxy = fetch_audio_proxy(testUrl, testUrlFile);
+  it("can fetch a proxy", async () => {
+    const proxy = await fetch_audio_proxy(testUrl, testUrlFile);
+    console.log(proxy);
     expect(proxy).not.toBeUndefined();
   });
 });
 
 describe("why not both", () => {
   it("can download and analyze a file", async () => {
-    const proxy = fetch_audio_proxy(testUrl, testUrlFile);
-    const rg = await get_replay_gain(testUrlFile);
-    expect(rg).toEqual({ gain: -6.43, peak: 1.104515 });
+    const proxy = await fetch_audio_proxy(testUrl, testUrlFile);
+    const rg = await get_replay_gain(proxy);
+    expect(rg).toEqual({ gain: -6.59, peak: 1.121168 });
   });
 });
 

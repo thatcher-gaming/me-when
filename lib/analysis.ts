@@ -1,6 +1,6 @@
+import { exec } from "child_process";
 import ffmpeg from "fluent-ffmpeg";
 import fs from "fs";
-import ytdl from "ytdl-core";
 
 const yoink = (s: string, prefix: string, suffix: string) =>
   s.split(prefix)[1].split(suffix)[0];
@@ -38,15 +38,22 @@ export const get_replay_gain = async (
 };
 
 export const fetch_audio_proxy = async (url: string, fname: string) => {
-  const info = await ytdl.getInfo(url);
-  const audioFormats = ytdl.filterFormats(info.formats, "audioonly");
-  const format = ytdl.chooseFormat(audioFormats, { quality: "lowestaudio" });
+  const args = [
+    url,
+    `-f wa`,
+    `--download-sections "*00:00:00-00:07:00"`,
+    `-o ${fname}`,
+  ];
 
-  const options: ytdl.downloadOptions = {
-    format: format,
-    range: { start: 0, end: 7 * 60 * 1000 },
-  };
-  return ytdl(url, options).pipe(fs.createWriteStream(fname));
+  return new Promise<string>((resolve, reject) => {
+    exec(`yt-dlp ${args.join(" ")}`, (error, stdout, stderr) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(fname);
+      }
+    });
+  });
 };
 
 export const db_to_ratio = (dbVal: number) => Math.pow(10, dbVal / 20);

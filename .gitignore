@@ -175,5 +175,10 @@ dist
 .DS_Store
 
 bot.toml
-/testdata
-/cache
+
+cache/*
+
+testdata/*
+!testdata/test.wav
+
+yt-dlp
